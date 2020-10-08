@@ -1,0 +1,20 @@
+---
+- name: int
+  hosts: web
+  become: yes
+
+  tasks:
+  - name: install packages
+    apt: name={{ item }} update_cache=yes state=latest
+    with_items:
+      - git
+
+
+  - name: create dir
+    file: dest=/home/nonroot/devops state=directory mode=0777
+
+  - name: clone repo
+    git:
+      accept_hostkey: yes
+      repo: 'https://github.com/integrator-sev/dock.git'
+      dest: /home/noonrot/devops
